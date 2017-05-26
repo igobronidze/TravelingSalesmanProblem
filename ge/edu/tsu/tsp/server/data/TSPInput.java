@@ -10,6 +10,8 @@ public class TSPInput {
 
     private long timeOut;
 
+    private int maxIteration;
+
     public int getNodeNumber() {
         return nodeNumber;
     }
@@ -40,5 +42,13 @@ public class TSPInput {
 
     public void setTimeOut(long timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public int getMaxIteration() {
+        return maxIteration;
+    }
+
+    public void setMaxIteration(int maxIteration) {
+        this.maxIteration = maxIteration;
     }
 }

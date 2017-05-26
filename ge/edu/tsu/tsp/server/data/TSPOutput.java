@@ -11,6 +11,8 @@ public class TSPOutput {
 
     private int totalDistance;
 
+    private long duration;
+
     public TSPOutputResult getResult() {
         return result;
     }
@@ -33,5 +35,13 @@ public class TSPOutput {
 
     public void setTotalDistance(int totalDistance) {
         this.totalDistance = totalDistance;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }

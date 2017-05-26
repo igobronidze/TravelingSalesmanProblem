@@ -3,7 +3,7 @@ package ge.edu.tsu.tsp;
 import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.graph.Graph;
 import ge.edu.tsu.tsp.server.tsp_helper.TSPDataCreator;
-import ge.edu.tsu.tsp.server.solve.TSPBruteForceSolver;
+import ge.edu.tsu.tsp.server.solve.brute_force.TSPBruteForceSolver;
 import ge.edu.tsu.tsp.server.solve.TSPSolver;
 
 public class Main {

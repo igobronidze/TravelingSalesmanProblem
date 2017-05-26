@@ -1,9 +1,10 @@
-package ge.edu.tsu.tsp.server.solve;
+package ge.edu.tsu.tsp.server.solve.brute_force;
 
 import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.data.TSPOutput;
 import ge.edu.tsu.tsp.server.data.TSPOutputResult;
 import ge.edu.tsu.tsp.server.graph.Graph;
+import ge.edu.tsu.tsp.server.solve.TSPSolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class TSPBruteForceSolver implements TSPSolver {
         tspOutput.setTotalDistance(Integer.MAX_VALUE);
         applyRecursion(graph, input, 0, route, indexes, 1);
         tspOutput.setResult(TSPOutputResult.SUCCESS);
+        tspOutput.setDuration(System.currentTimeMillis() - currMS);
         return tspOutput;
     }
 
