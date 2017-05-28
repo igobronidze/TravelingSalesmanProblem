@@ -13,11 +13,14 @@ public class Tour implements Comparable<Tour> {
 
 	private double fitness;
 
+	private Graph graph;
+
 	public Tour(List<Integer> nodeIndexes, Graph graph) {
 		this.nodeIndexes = nodeIndexes;
+		this.graph = graph;
 		this.distance = TourHelper.getDistance(nodeIndexes, graph);
 		this.fitness = 1.0 / distance;
-	}
+}
 
 	public List<Integer> getNodeIndexes() {
 		return nodeIndexes;
@@ -31,8 +34,12 @@ public class Tour implements Comparable<Tour> {
 		return fitness;
 	}
 
+	public Graph getGraph() {
+		return graph;
+	}
+
 	@Override
 	public int compareTo(Tour o) {
-		return Double.compare(fitness, o.getFitness());
+		return Double.compare(o.getFitness(), fitness);
 	}
 }

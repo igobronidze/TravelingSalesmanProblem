@@ -10,7 +10,7 @@ public class GAParams {
 
 	public static final int SURVIVED_EXEMPLARS = 10;
 
-	public static final SelectionType SELECTION_TYPE = SelectionType.ROULETTE_WHEEL_SELECTION;
+	public static final SelectionType SELECTION_TYPE = SelectionType.RANDOM_SELECTION;
 
 	public static final CrossoverType CROSSOVER_TYPE = CrossoverType.PARTIAL_MAPPED_CROSSOVER;
 

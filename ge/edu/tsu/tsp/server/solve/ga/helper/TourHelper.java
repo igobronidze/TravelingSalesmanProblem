@@ -14,7 +14,7 @@ public class TourHelper {
 		for (int i = 0; i < indexes.size() - 1; i++) {
 			distance += graph.getNodes().get(indexes.get(i)).getConnections().get(indexes.get(i + 1)).getDistance();
 		}
-		distance += graph.getNodes().get(indexes.get(indexes.size() - 1)).getConnections().get(1).getDistance();
+		distance += graph.getNodes().get(indexes.get(indexes.size() - 1)).getConnections().get(indexes.get(0)).getDistance();
 		return distance;
 	}
 

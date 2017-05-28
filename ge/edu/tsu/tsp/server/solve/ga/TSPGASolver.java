@@ -14,6 +14,7 @@ public class TSPGASolver implements TSPSolver {
 	public TSPOutput solve(Graph graph, TSPInput input) {
 		TSPOutput tspOutput = new TSPOutput();
 		Tour tour = GA.getBestTour(graph, input.getMaxIteration());
+		tspOutput.setGraph(graph);
 		tspOutput.setTotalDistance(tour.getDistance());
 		tspOutput.setRoute(tour.getNodeIndexes());
 		tspOutput.setResult(TSPOutputResult.SUCCESS);

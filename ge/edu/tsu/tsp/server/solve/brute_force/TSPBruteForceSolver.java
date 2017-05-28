@@ -13,7 +13,7 @@ public class TSPBruteForceSolver implements TSPSolver {
 
     private long currMS = 0;
 
-    private TSPOutput tspOutput = new TSPOutput();
+    private TSPOutput tspOutput;
 
     @Override
     public TSPOutput solve(Graph graph, TSPInput input) {
@@ -24,6 +24,8 @@ public class TSPBruteForceSolver implements TSPSolver {
         }
         List<Integer> route = new ArrayList<>();
         route.add(1);
+        tspOutput = new TSPOutput();
+        tspOutput.setGraph(graph);
         tspOutput.setTotalDistance(Integer.MAX_VALUE);
         applyRecursion(graph, input, 0, route, indexes, 1);
         tspOutput.setResult(TSPOutputResult.SUCCESS);
@@ -48,12 +50,12 @@ public class TSPBruteForceSolver implements TSPSolver {
             return;
         }
         for (Integer i : remainingIndexes) {
-            currDistance += graph.getNodes().get(lastIndex).getConnections().get(i).getDistance();
+            int distance = currDistance + graph.getNodes().get(lastIndex).getConnections().get(i).getDistance();
             List<Integer> newRoute = new ArrayList<>(existedRoute);
             newRoute.add(i);
             List<Integer> newRemaining = new ArrayList<>(remainingIndexes);
             newRemaining.remove(i);
-            applyRecursion(graph, input, currDistance, newRoute, newRemaining, i);
+            applyRecursion(graph, input, distance, newRoute, newRemaining, i);
         }
     }
 }
