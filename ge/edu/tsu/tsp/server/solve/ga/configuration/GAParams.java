@@ -6,9 +6,9 @@ import ge.edu.tsu.tsp.server.solve.ga.operation.selection.SelectionType;
 
 public class GAParams {
 
-	public static final int POPULATION_SIZE = 100;
+	public static final int POPULATION_SIZE = 200;
 
-	public static final int SURVIVED_EXEMPLARS = 10;
+	public static final int SURVIVED_EXEMPLARS = 20;
 
 	public static final SelectionType SELECTION_TYPE = SelectionType.RANDOM_SELECTION;
 

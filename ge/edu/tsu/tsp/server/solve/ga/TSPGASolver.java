@@ -13,11 +13,13 @@ public class TSPGASolver implements TSPSolver {
 	@Override
 	public TSPOutput solve(Graph graph, TSPInput input) {
 		TSPOutput tspOutput = new TSPOutput();
+		long currMS = System.currentTimeMillis();
 		Tour tour = GA.getBestTour(graph, input.getMaxIteration());
 		tspOutput.setGraph(graph);
 		tspOutput.setTotalDistance(tour.getDistance());
 		tspOutput.setRoute(tour.getNodeIndexes());
 		tspOutput.setResult(TSPOutputResult.SUCCESS);
+		tspOutput.setDuration(System.currentTimeMillis() - currMS);
 		return tspOutput;
 	}
 }

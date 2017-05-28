@@ -4,5 +4,5 @@ import ge.edu.tsu.tsp.server.solve.ga.main.Tour;
 
 public interface Mutation {
 
-	void applyMutation(Tour tour);
+	Tour applyMutation(Tour tour);
 }

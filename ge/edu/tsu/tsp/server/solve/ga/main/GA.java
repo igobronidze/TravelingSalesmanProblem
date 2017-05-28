@@ -33,7 +33,10 @@ public class GA {
 				newPopulation.getTours().add(crossover.applyCrossover(tour1, tour2));
 			}
 			if (new Random().nextDouble() < GAParams.MUTATION_RATE) {
-				mutation.applyMutation(new ArrayList<>(newPopulation.getTours()).get(new Random().nextInt(GAParams.POPULATION_SIZE)));
+				Tour tour = new ArrayList<>(newPopulation.getTours()).get(new Random().nextInt(GAParams.POPULATION_SIZE));
+				newPopulation.getTours().remove(tour);
+				tour = mutation.applyMutation(tour);
+				newPopulation.getTours().add(tour);
 			}
 			population = newPopulation;
 		}
