@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         TSPInput input = new TSPInput();
-        input.setNodeNumber(6);
+        input.setNodeNumber(14);
         input.setMinDistance(1);
         input.setMaxDistance(7);
         input.setTimeOut(60);

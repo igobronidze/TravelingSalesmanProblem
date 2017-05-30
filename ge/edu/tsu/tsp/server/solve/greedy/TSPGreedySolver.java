@@ -46,16 +46,19 @@ public class TSPGreedySolver implements TSPSolver {
         for (int i = 1; i <= nodeNumber; i++) {
             visited.put(i, 0);
         }
+        DisjointUnionSets disjointUnionSets = new DisjointUnionSets(nodeNumber + 1);
         for (Neighbor neighbor : neighbors) {
-            // TODO[IG] must change check of loop
-            if (visited.get(neighbor.first) != 2 && visited.get(neighbor.second) != 2) {
-                if (tour.size() != nodeNumber - 1 && visited.get(neighbor.first) == 1 && visited.get(neighbor.second) == 1) {
-                    continue;
-                }
-                tour.add(neighbor);
-                visited.put(neighbor.first, visited.get(neighbor.first) + 1);
-                visited.put(neighbor.second, visited.get(neighbor.second) + 1);
+            if (visited.get(neighbor.first) == 2 || visited.get(neighbor.second) == 2) {
+                continue;
             }
+            if (visited.get(neighbor.first) == 1 && visited.get(neighbor.second) == 1 && disjointUnionSets.find(neighbor.first) == disjointUnionSets.find(neighbor.second)
+                    && tour.size() != nodeNumber - 1) {
+                continue;
+            }
+            disjointUnionSets.union(neighbor.first, neighbor.second);
+            tour.add(neighbor);
+            visited.put(neighbor.first, visited.get(neighbor.first) + 1);
+            visited.put(neighbor.second, visited.get(neighbor.second) + 1);
         }
         return getIndexes(tour);
     }
