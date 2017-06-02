@@ -1,4 +1,4 @@
-package ge.edu.tsu.tsp.server.solve.greedy;
+package ge.edu.tsu.tsp.server.solve.common;
 
 public class DisjointUnionSets {
 

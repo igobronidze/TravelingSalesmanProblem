@@ -1,6 +1,8 @@
 package ge.edu.tsu.tsp.client;
 
+import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.graph.Graph;
+import ge.edu.tsu.tsp.server.solve.mst.TSPDuplicateMSTSolver;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -62,5 +64,16 @@ public class RoutePane extends AnchorPane {
                 gc.fillText("" + distance, x, y);
             }
         }
+        testSolver(graph);
+    }
+
+    private void testSolver(Graph graph) {
+        TSPInput input = new TSPInput();
+        input.setNodeNumber(8);
+        input.setMinDistance(1);
+        input.setMaxDistance(7);
+        input.setTimeOut(60);
+        input.setMaxIteration(1000);
+        new TSPDuplicateMSTSolver().solve(graph, input).print(false);
     }
 }

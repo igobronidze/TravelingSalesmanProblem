@@ -5,6 +5,9 @@ import ge.edu.tsu.tsp.server.data.TSPOutput;
 import ge.edu.tsu.tsp.server.data.TSPOutputResult;
 import ge.edu.tsu.tsp.server.graph.Graph;
 import ge.edu.tsu.tsp.server.solve.TSPSolver;
+import ge.edu.tsu.tsp.server.solve.common.DisjointUnionSets;
+import ge.edu.tsu.tsp.server.solve.common.Edge;
+import ge.edu.tsu.tsp.server.solve.common.EdgeHelper;
 import ge.edu.tsu.tsp.server.solve.ga.main.Tour;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ public class TSPGreedySolver implements TSPSolver {
     public TSPOutput solve(Graph graph, TSPInput input) {
         TSPOutput tspOutput = new TSPOutput();
         long currMS = System.currentTimeMillis();
-        List<Integer> indexes = getBestTour(getAllNeighbor(graph), graph.getNodeNumber());
+        List<Integer> indexes = getBestTour(EdgeHelper.getAllEdges(graph), graph.getNodeNumber());
         Tour tour = new Tour(indexes, graph);
         tspOutput.setGraph(graph);
         tspOutput.setTotalDistance(tour.getDistance());
@@ -30,80 +33,50 @@ public class TSPGreedySolver implements TSPSolver {
         return tspOutput;
     }
 
-    private Queue<Neighbor> getAllNeighbor(Graph graph) {
-        Queue<Neighbor> neighbors = new PriorityQueue<>();
-        for (int i = 1; i <= graph.getNodeNumber(); i++) {
-            for (int j = i + 1; j <= graph.getNodeNumber(); j++) {
-                neighbors.add(new Neighbor(i, j, graph.getNodes().get(i).getConnections().get(j).getDistance()));
-            }
-        }
-        return neighbors;
-    }
-
-    private List<Integer> getBestTour(Queue<Neighbor> neighbors, int nodeNumber) {
-        List<Neighbor> tour = new ArrayList<>();
+    private List<Integer> getBestTour(Queue<Edge> edges, int nodeNumber) {
+        List<Edge> tour = new ArrayList<>();
         Map<Integer, Integer> visited = new HashMap<>();
         for (int i = 1; i <= nodeNumber; i++) {
             visited.put(i, 0);
         }
         DisjointUnionSets disjointUnionSets = new DisjointUnionSets(nodeNumber + 1);
-        for (Neighbor neighbor : neighbors) {
-            if (visited.get(neighbor.first) == 2 || visited.get(neighbor.second) == 2) {
+        for (Edge edge : edges) {
+            if (visited.get(edge.getFirst()) == 2 || visited.get(edge.getSecond()) == 2) {
                 continue;
             }
-            if (visited.get(neighbor.first) == 1 && visited.get(neighbor.second) == 1 && disjointUnionSets.find(neighbor.first) == disjointUnionSets.find(neighbor.second)
+            if (visited.get(edge.getFirst()) == 1 && visited.get(edge.getSecond()) == 1 && disjointUnionSets.find(edge.getFirst()) == disjointUnionSets.find(edge.getSecond())
                     && tour.size() != nodeNumber - 1) {
                 continue;
             }
-            disjointUnionSets.union(neighbor.first, neighbor.second);
-            tour.add(neighbor);
-            visited.put(neighbor.first, visited.get(neighbor.first) + 1);
-            visited.put(neighbor.second, visited.get(neighbor.second) + 1);
+            disjointUnionSets.union(edge.getFirst(), edge.getSecond());
+            tour.add(edge);
+            visited.put(edge.getFirst(), visited.get(edge.getFirst()) + 1);
+            visited.put(edge.getSecond(), visited.get(edge.getSecond()) + 1);
         }
         return getIndexes(tour);
     }
 
-    private List<Integer> getIndexes(List<Neighbor> neighbors) {
+    private List<Integer> getIndexes(List<Edge> edges) {
         List<Integer> indexes = new ArrayList<>();
-        Neighbor neighbor = neighbors.get(0);
-        indexes.add(neighbor.first);
-        indexes.add(neighbor.second);
-        while (indexes.size() != neighbors.size()) {
-            for (Neighbor n : neighbors) {
-                if (n != neighbor) {
-                    if (indexes.get(indexes.size() - 1) == n.first) {
-                        indexes.add(n.second);
-                        neighbor = n;
+        Edge edge = edges.get(0);
+        indexes.add(edge.getFirst());
+        indexes.add(edge.getSecond());
+        while (indexes.size() != edges.size()) {
+            for (Edge n : edges) {
+                if (n != edge) {
+                    if (indexes.get(indexes.size() - 1) == n.getFirst()) {
+                        indexes.add(n.getSecond());
+                        edge = n;
                         break;
                     }
-                    if (indexes.get(indexes.size() - 1) == n.second) {
-                        indexes.add(n.first);
-                        neighbor = n;
+                    if (indexes.get(indexes.size() - 1) == n.getSecond()) {
+                        indexes.add(n.getFirst());
+                        edge = n;
                         break;
                     }
                 }
             }
         }
         return indexes;
-    }
-
-    private class Neighbor implements Comparable<Neighbor> {
-
-        private int first;
-
-        private int second;
-
-        private int distance;
-
-        private Neighbor(int first, int second, int distance) {
-            this.first = first;
-            this.second = second;
-            this.distance = distance;
-        }
-
-        @Override
-        public int compareTo(Neighbor o) {
-            return Integer.compare(distance, o.distance);
-        }
     }
 }
