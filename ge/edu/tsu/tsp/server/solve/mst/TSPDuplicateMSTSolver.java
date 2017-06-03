@@ -21,7 +21,7 @@ public class TSPDuplicateMSTSolver implements TSPSolver {
 		TSPOutput tspOutput = new TSPOutput();
 		long currMS = System.currentTimeMillis();
 		MinimumSpanningTree minimumSpanningTree = new MinimumSpanningTree(graph);
-		Tour tour = getTour(getDuplicatePath(minimumSpanningTree.getMST()), graph);
+		Tour tour = MSTHelper.getTourFromDuplicatePath(getDuplicatePath(minimumSpanningTree.getMST()), graph);
 		tspOutput.setGraph(graph);
 		tspOutput.setTotalDistance(tour.getDistance());
 		tspOutput.setRoute(tour.getNodeIndexes());
@@ -46,17 +46,5 @@ public class TSPDuplicateMSTSolver implements TSPSolver {
 			}
 		}
 		path.add(index);
-	}
-
-	private Tour getTour(List<Integer> duplicatePath, Graph graph) {
-		List<Integer> nodeIndexes = new ArrayList<>();
-		Set<Integer> set = new HashSet<>();
-		for (int x : duplicatePath) {
-			if (!set.contains(x)) {
-				set.add(x);
-				nodeIndexes.add(x);
-			}
-		}
-		return new Tour(nodeIndexes, graph);
 	}
 }
