@@ -11,6 +11,7 @@ import ge.edu.tsu.tsp.server.solve.greedy.TSPGreedySolver;
 import ge.edu.tsu.tsp.server.solve.mst.TSPDuplicateMSTSolver;
 import ge.edu.tsu.tsp.server.solve.nearestneighbor.TSPNearestForAllSolver;
 import ge.edu.tsu.tsp.server.solve.nearestneighbor.TSPNearestNeighborSolver;
+import ge.edu.tsu.tsp.server.solve.opt.TSPThreeOptSolver;
 import ge.edu.tsu.tsp.server.solve.opt.TSPTwoOptSolver;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Main {
         TSPInput input = new TSPInput();
         input.setNodeNumber(100);
         input.setMinDistance(1);
-        input.setMaxDistance(7);
+        input.setMaxDistance(25);
         input.setTimeOut(60);
         input.setMaxIteration(1000);
         Graph graph = TSPDataCreator.getRandomizeGraph(input);
@@ -45,7 +46,8 @@ public class Main {
         tspSolveMethods.add(new TSPSolverMethod("ხარბი:", 5, "O(n^2log^2(n))", new TSPGreedySolver()));
         tspSolveMethods.add(new TSPSolverMethod("გაორმაგებული მინინიმალური დამფარავი ხე::", 6, "O(n^2log(n))", new TSPDuplicateMSTSolver()));
         tspSolveMethods.add(new TSPSolverMethod("შტოების და საზღვრების მეთოდი:", 7, "O(n^4)", new TSPBranchAndBoundSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("ორის ამოშლა:", 8, "O(n^3)", new TSPTwoOptSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("ორის ამოშლა:", 8, "X", new TSPTwoOptSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("სამის ამოშლა:", 9, "X", new TSPThreeOptSolver()));
         return tspSolveMethods;
     }
 }

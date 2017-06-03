@@ -7,17 +7,16 @@ import ge.edu.tsu.tsp.server.graph.Graph;
 import ge.edu.tsu.tsp.server.solve.TSPSolver;
 import ge.edu.tsu.tsp.server.solve.ga.main.Tour;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TSPTwoOptSolver implements TSPSolver {
 
     @Override
+    @SuppressWarnings("Duplicates")
     public TSPOutput solve(Graph graph, TSPInput input) {
         TSPOutput tspOutput = new TSPOutput();
         long currMS = System.currentTimeMillis();
-        List<Integer> route = getRandomRoute(graph.getNodeNumber());
+        List<Integer> route = OptHelper.getRandomRoute(graph.getNodeNumber());
         while (true) {
             int gain = applyBestRemoving(route, graph);
             if (gain <= 0) {
@@ -50,19 +49,9 @@ public class TSPTwoOptSolver implements TSPSolver {
                 }
             }
         }
-        int tmp = route.get(x + 1);
-        route.set(x + 1, route.get(y));
-        route.set(y, tmp);
-        return maxGain;
-    }
-
-    private List<Integer> getRandomRoute(int n) {
-        List<Integer> route = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            route.add(i);
+        if (maxGain > 0) {
+            OptHelper.swap(x + 1, y, route);
         }
-        Collections.shuffle(route);
-        route.add(route.get(0));
-        return route;
+        return maxGain;
     }
 }

@@ -58,8 +58,10 @@ public class TSPOutput {
     }
 
     public void print(boolean onlyDistance) {
+        System.out.println("შედეგი: " + result);
+        System.out.println("დრო: " + duration / 1000 + "წმ");
         if (result != TSPOutputResult.SUCCESS) {
-            System.out.println(result);
+            return;
         }
         if (!onlyDistance) {
             int indexOfOne = 0;
