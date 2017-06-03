@@ -7,13 +7,15 @@ import ge.edu.tsu.tsp.client.component.TCHFieldLabel;
 import ge.edu.tsu.tsp.client.component.TCHNumberTextField;
 import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.graph.Graph;
-import ge.edu.tsu.tsp.server.solve.TSPSolveMethod;
-import ge.edu.tsu.tsp.server.tsp_helper.TSPDataCreator;
+import ge.edu.tsu.tsp.server.solve.TSPSolverMethod;
+import ge.edu.tsu.tsp.server.solve.TSPDataCreator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ParamsPane extends VBox {
 
@@ -56,7 +58,7 @@ public class ParamsPane extends VBox {
         vBox.setSpacing(7);
         vBox.setPadding(new Insets(10));
         vBox.setStyle("-fx-border-color: green; -fx-border-radius: 5px; -fx-border-size: 1px;");
-        TCHComboBox methodComboBox = new TCHComboBox(Arrays.asList(TSPSolveMethod.values()));
+        TCHComboBox methodComboBox = new TCHComboBox(new ArrayList<>());
         TCHFieldLabel methodFieldLabel = new TCHFieldLabel("მეთოდი", methodComboBox);
         TCHNumberTextField timeOutField = new TCHNumberTextField(TCHComponentSize.SMALL);
         TCHFieldLabel timeOutFieldLabel = new TCHFieldLabel("დროის ლიმიტი", timeOutField);

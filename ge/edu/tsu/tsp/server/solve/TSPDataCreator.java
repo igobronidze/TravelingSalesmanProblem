@@ -1,4 +1,4 @@
-package ge.edu.tsu.tsp.server.tsp_helper;
+package ge.edu.tsu.tsp.server.solve;
 
 import ge.edu.tsu.tsp.server.graph.Connection;
 import ge.edu.tsu.tsp.server.graph.Node;

@@ -2,55 +2,48 @@ package ge.edu.tsu.tsp;
 
 import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.graph.Graph;
+import ge.edu.tsu.tsp.server.solve.TSPDataCreator;
+import ge.edu.tsu.tsp.server.solve.TSPSolverMethod;
+import ge.edu.tsu.tsp.server.solve.branch_and_bound.TSPBranchAndBoundSolver;
+import ge.edu.tsu.tsp.server.solve.brute_force.TSPBruteForceSolver;
 import ge.edu.tsu.tsp.server.solve.ga.TSPGASolver;
 import ge.edu.tsu.tsp.server.solve.greedy.TSPGreedySolver;
 import ge.edu.tsu.tsp.server.solve.mst.TSPDuplicateMSTSolver;
 import ge.edu.tsu.tsp.server.solve.nearestneighbor.TSPNearestForAllSolver;
 import ge.edu.tsu.tsp.server.solve.nearestneighbor.TSPNearestNeighborSolver;
-import ge.edu.tsu.tsp.server.tsp_helper.TSPDataCreator;
-import ge.edu.tsu.tsp.server.solve.brute_force.TSPBruteForceSolver;
-import ge.edu.tsu.tsp.server.solve.TSPSolver;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
-    private static Map<Integer, TSPSolver> solvers = new TreeMap<>();
-
-    private static Map<Integer, String> descriptions = new HashMap<>();
-
     public static void main(String[] args) {
         TSPInput input = new TSPInput();
-        input.setNodeNumber(8);
+        input.setNodeNumber(10);
         input.setMinDistance(1);
         input.setMaxDistance(7);
         input.setTimeOut(60);
-        input.setMaxIteration(1000);
+        input.setMaxIteration(100);
         Graph graph = TSPDataCreator.getRandomizeGraph(input);
 
-        initSolvers();
+        List<TSPSolverMethod> solverMethods = initSolvers();
 
-        for (int x : solvers.keySet()) {
-            System.out.println(descriptions.get(x));
-            solvers.get(x).solve(graph, input).print(false);
+        for (TSPSolverMethod solverMethod : solverMethods) {
+            System.out.println(solverMethod.getDescription() + " " + solverMethod.getComplexity());
+            solverMethod.getTspSolver().solve(graph, input).print(true);
             System.out.println("--------------------------------------------------------------------" + System.lineSeparator());
         }
     }
 
-    private static void initSolvers() {
-        solvers.put(1, new TSPBruteForceSolver());
-        descriptions.put(1, "სრული გადარჩევა:");
-        solvers.put(2, new  TSPGASolver());
-        descriptions.put(2, "გენეტიკური:");
-        solvers.put(3, new  TSPNearestNeighborSolver());
-        descriptions.put(3, "უახლოესი მეზობელი:");
-        solvers.put(4, new  TSPNearestForAllSolver());
-        descriptions.put(4, "უახლოესი მეზობელი ყველა წვეროსთვის:");
-        solvers.put(5, new  TSPGreedySolver());
-        descriptions.put(5, "ხარბი:");
-        solvers.put(6, new TSPDuplicateMSTSolver());
-        descriptions.put(6, "გაორმაგებული მინინიმალური დამფარავი ხე:");
+    private static List<TSPSolverMethod> initSolvers() {
+        List<TSPSolverMethod> tspSolveMethods = new ArrayList<>();
+        tspSolveMethods.add(new TSPSolverMethod("სრული გადარჩევა:", 1, "O((n-1)!)", new TSPBruteForceSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("გენეტიკური:", 2, "X", new TSPGASolver()));
+        tspSolveMethods.add(new TSPSolverMethod("უახლოესი მეზობელი:", 3, "O(n^2)", new TSPNearestNeighborSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("უახლოესი მეზობელი ყველა წვეროსთვის:", 4, "O(n^3)", new TSPNearestForAllSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("ხარბი:", 5, "O(n^2log^2(n))", new TSPGreedySolver()));
+        tspSolveMethods.add(new TSPSolverMethod("გაორმაგებული მინინიმალური დამფარავი ხე::", 6, "O(n^2log(n))", new TSPDuplicateMSTSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("შტოების და საზღვრების მეთოდი:", 7, "O(n^4)", new TSPBranchAndBoundSolver()));
+        return tspSolveMethods;
     }
 }
