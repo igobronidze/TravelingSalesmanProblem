@@ -7,6 +7,8 @@ import ge.edu.tsu.tsp.server.solve.TSPSolverMethod;
 import ge.edu.tsu.tsp.server.solve.branch_and_bound.TSPBranchAndBoundSolver;
 import ge.edu.tsu.tsp.server.solve.brute_force.TSPBruteForceSolver;
 import ge.edu.tsu.tsp.server.solve.ga.TSPGASolver;
+import ge.edu.tsu.tsp.server.solve.ga.configuration.GAParams;
+import ge.edu.tsu.tsp.server.solve.ga.operation.selection.SelectionType;
 import ge.edu.tsu.tsp.server.solve.greedy.TSPGreedySolver;
 import ge.edu.tsu.tsp.server.solve.mst.TSPDuplicateMSTSolver;
 import ge.edu.tsu.tsp.server.solve.nearestneighbor.TSPNearestForAllSolver;
@@ -21,6 +23,8 @@ import java.util.Scanner;
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
+
+    private static boolean printFullPath = false;
 
     public static void main(String[] args) {
         TSPInput input = initInput();
@@ -42,7 +46,7 @@ public class Main {
                 input.setMaxIteration(scanner.nextInt());
             }
             System.out.println(solverMethod.getDescription() + " " + solverMethod.getComplexity());
-            solverMethod.getTspSolver().solve(graph, input).print(true);
+            solverMethod.getTspSolver().solve(graph, input).print(printFullPath);
             System.out.println("--------------------------------------------------------------------" + System.lineSeparator());
         }
     }
@@ -57,6 +61,8 @@ public class Main {
         input.setMaxDistance(scanner.nextInt());
         System.out.println("დროის ლიმიტი(წმ):");
         input.setTimeOut(scanner.nextInt());
+        System.out.println("სრული გზის დაბეჭდვა:(true/false)");
+        printFullPath = Boolean.valueOf(scanner.next());
         return input;
     }
 

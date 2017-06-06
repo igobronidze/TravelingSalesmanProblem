@@ -57,13 +57,13 @@ public class TSPOutput {
         this.graph = graph;
     }
 
-    public void print(boolean onlyDistance) {
+    public void print(boolean fullPath) {
         System.out.println("შედეგი: " + result);
-        System.out.println("დრო: " + duration / 1000 + "წმ");
+        System.out.println("დრო: " + duration + "მწმ");
         if (result != TSPOutputResult.SUCCESS) {
             return;
         }
-        if (!onlyDistance) {
+        if (fullPath) {
             int indexOfOne = 0;
             for (int i = 0; i < route.size(); i++) {
                 if (route.get(i) == 1) {

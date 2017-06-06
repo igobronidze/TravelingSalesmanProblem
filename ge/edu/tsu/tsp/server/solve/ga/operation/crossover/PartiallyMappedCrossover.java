@@ -31,12 +31,12 @@ public class PartiallyMappedCrossover implements Crossover {
 		for (int i = 1 ; i <= indexes.size(); i++) {
 			notUsed.add(i);
 		}
-		for (int i = 0 ; i < indexes.size(); i++) {
-			notUsed.remove(new Integer(indexes.get(i)));
-			if (used.contains(indexes.get(i))) {
-				duplicate.add(indexes.get(i));
+		for (Integer index : indexes) {
+			notUsed.remove(index);
+			if (used.contains(index)) {
+				duplicate.add(index);
 			}
-			used.add(indexes.get(i));
+			used.add(index);
 		}
 		Iterator<Integer> it = notUsed.iterator();
 		for (int i = 0 ; i < indexes.size(); i++) {
