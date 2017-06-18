@@ -1,4 +1,4 @@
-package ge.edu.tsu.tsp;
+package ge.edu.tsu.tsp.client;
 
 import ge.edu.tsu.tsp.server.data.TSPInput;
 import ge.edu.tsu.tsp.server.graph.Graph;
@@ -26,9 +26,18 @@ public class Main {
 
     private static boolean printFullPath = false;
 
+    private static boolean random = false;
+
     public static void main(String[] args) {
         TSPInput input = initInput();
-        Graph graph = TSPDataCreator.getRandomizeGraph(input);
+        Graph graph;
+        if (random) {
+            graph = TSPDataCreator.getRandomizeGraph(input);
+        } else {
+            int[][] matrix = getMatrix();
+            input.setNodeNumber(matrix.length);
+            graph = TSPDataCreator.getGraphFromMatrix(matrix);
+        }
         List<TSPSolverMethod> solverMethods = initSolvers();
         for (int i = 0; i < solverMethods.size(); i++) {
             TSPSolverMethod solverMethod = solverMethods.get(i);
@@ -53,12 +62,16 @@ public class Main {
 
     private static TSPInput initInput() {
         TSPInput input = new TSPInput();
-        System.out.println("ქალაქების რაოდენობა:");
-        input.setNodeNumber(scanner.nextInt());
-        System.out.println("მინიმალური მანძილი:");
-        input.setMinDistance(scanner.nextInt());
-        System.out.println("მაქსიმალური მანძილი:");
-        input.setMaxDistance(scanner.nextInt());
+        System.out.println("შემთხვევით რიცხვები:(true/false)");
+        random = scanner.nextBoolean();
+        if (random) {
+            System.out.println("ქალაქების რაოდენობა:");
+            input.setNodeNumber(scanner.nextInt());
+            System.out.println("მინიმალური მანძილი:");
+            input.setMinDistance(scanner.nextInt());
+            System.out.println("მაქსიმალური მანძილი:");
+            input.setMaxDistance(scanner.nextInt());
+        }
         System.out.println("დროის ლიმიტი(წმ):");
         input.setTimeOut(scanner.nextInt());
         System.out.println("სრული გზის დაბეჭდვა:(true/false)");
@@ -69,14 +82,27 @@ public class Main {
     private static List<TSPSolverMethod> initSolvers() {
         List<TSPSolverMethod> tspSolveMethods = new ArrayList<>();
         tspSolveMethods.add(new TSPSolverMethod("სრული გადარჩევა:", 1, "O((n-1)!)", new TSPBruteForceSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("გენეტიკური:", 2, "X", new TSPGASolver()));
+        tspSolveMethods.add(new TSPSolverMethod("გენეტიკური:", 2, "...", new TSPGASolver()));
         tspSolveMethods.add(new TSPSolverMethod("უახლოესი მეზობელი:", 3, "O(n^2)", new TSPNearestNeighborSolver()));
         tspSolveMethods.add(new TSPSolverMethod("უახლოესი მეზობელი ყველა წვეროსთვის:", 4, "O(n^3)", new TSPNearestForAllSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("გაორმაგებული მინინიმალური დამფარავი ხე::", 6, "O(n^2log(n))", new TSPDuplicateMSTSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("ხარბი:", 5, "O(n^2log^2(n))", new TSPGreedySolver()));
+        tspSolveMethods.add(new TSPSolverMethod("გაორმაგებული მინინიმალური დამფარავი ხე:", 6, "O(n^2log(n))", new TSPDuplicateMSTSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("ხარბი:", 5, "O(n^2log(n))", new TSPGreedySolver()));
         tspSolveMethods.add(new TSPSolverMethod("შტოების და საზღვრების მეთოდი:", 7, "O(n^4)", new TSPBranchAndBoundSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("ორის ამოშლა:", 8, "X", new TSPTwoOptSolver()));
-        tspSolveMethods.add(new TSPSolverMethod("სამის ამოშლა:", 9, "X", new TSPThreeOptSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("ორის ამოშლა:", 8, "...", new TSPTwoOptSolver()));
+        tspSolveMethods.add(new TSPSolverMethod("სამის ამოშლა:", 9, "...", new TSPThreeOptSolver()));
         return tspSolveMethods;
+    }
+
+    private static int[][] getMatrix() {
+        return new int[][]{
+                {0, 76, 1000, 38, 51, 42, 19, 80},
+                {42, 0, 49, 26, 78, 52, 39, 87},
+                {48, 1000, 0, 36, 53, 44, 68, 61},
+                {72, 31, 29, 0, 42, 49, 50, 38},
+                {30, 52, 38, 47, 0, 64, 75, 82},
+                {66, 51, 83, 51, 52, 0, 37, 71},
+                {77, 62, 93, 54, 69, 38, 0, 26},
+                {42, 58, 66, 76, 41, 52, 83, 0}
+        };
     }
 }

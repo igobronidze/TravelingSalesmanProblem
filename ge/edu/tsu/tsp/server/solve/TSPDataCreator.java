@@ -29,7 +29,33 @@ public class TSPDataCreator {
                     connection.setSecondNode(secondNode);
                     connection.setDistance(distance);
                     firstNode.getConnections().put(j, connection);
-                    secondNode.getConnections().put(i, connection);
+//                    secondNode.getConnections().put(i, connection);
+                }
+            }
+        }
+        return graph;
+    }
+
+    public static Graph getGraphFromMatrix(int[][] matrix) {
+        Graph graph = new Graph();
+        graph.setNodeNumber(matrix.length);
+        for (int i = 1; i <= matrix.length; i++) {
+            Node node = new Node();
+            node.setIndex(i);
+            graph.getNodes().put(i, node);
+        }
+        for (int i = 1; i <= matrix.length; i++) {
+            Node firstNode = graph.getNodes().get(i);
+            for (int j = 1; j <= matrix.length; j++) {
+                if (i != j) {
+                    Node secondNode = graph.getNodes().get(j);
+                    int distance = matrix[i - 1][j - 1];
+                    Connection connection = new Connection();
+                    connection.setFirstNode(firstNode);
+                    connection.setSecondNode(secondNode);
+                    connection.setDistance(distance);
+                    firstNode.getConnections().put(j, connection);
+//                    secondNode.getConnections().put(i, connection);
                 }
             }
         }
